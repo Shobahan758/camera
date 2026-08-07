@@ -1,0 +1,40 @@
+@extends('dasgboard.layouts.app')
+
+@section('title', 'সব বিভাগ চালু/বন্ধ')
+
+@push('styles')
+<style>
+    .section-list{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}.section-toggle{display:flex;align-items:center;justify-content:space-between;gap:18px;padding:17px 18px;border:1px solid var(--line);border-radius:13px;background:#fff}.section-copy strong{display:block;font-size:17px}.section-copy small{color:var(--muted)}.switch{position:relative;flex:0 0 auto;width:52px;height:29px}.switch input{position:absolute;opacity:0}.slider{position:absolute;inset:0;border-radius:99px;background:#cfc4bc;cursor:pointer;transition:.2s}.slider:before{content:'';position:absolute;width:21px;height:21px;left:4px;top:4px;border-radius:50%;background:#fff;box-shadow:0 2px 7px #0003;transition:.2s}.switch input:checked+.slider{background:var(--primary)}.switch input:checked+.slider:before{transform:translateX(23px)}.toolbar{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:12px;margin-bottom:18px}.bulk-buttons{display:flex;gap:8px}.bulk-buttons button{padding:8px 12px;border:1px solid var(--line);border-radius:8px;background:#fff;color:var(--ink);cursor:pointer;font:inherit}.save-status{margin-top:20px;padding:12px 20px;border:0;border-radius:9px;background:var(--primary);color:#fff;font:inherit;font-weight:700;cursor:pointer}.alert{margin-bottom:18px;padding:12px;border-radius:9px;background:#eef2ff;color:var(--primary-dark)}@media(max-width:720px){.section-list{grid-template-columns:1fr}}
+</style>
+@endpush
+
+@section('content')
+<div class="page-heading"><div><h1>সব বিভাগ চালু/বন্ধ</h1><p>এক জায়গা থেকে ওয়েবসাইটের বিভাগগুলো চালু অথবা বন্ধ করুন।</p></div></div>
+@if(session('success'))<div class="alert">{{ session('success') }}</div>@endif
+<form method="POST" action="{{ route('admin.landing.visibility') }}">
+    @csrf @method('PUT')
+    <section class="panel">
+        <div class="toolbar"><strong>মোট {{ count($definitions) }}টি বিভাগ</strong><div class="bulk-buttons"><button id="enableAll" type="button">সব চালু করুন</button><button id="disableAll" type="button">সব বন্ধ করুন</button></div></div>
+        <div class="section-list">
+            @foreach($definitions as $slug => $definition)
+                @php($isVisible = $sections->get($slug)?->is_visible ?? true)
+                <label class="section-toggle">
+                    <span class="section-copy"><strong>{{ $definition['label'] }}</strong><small class="status-text">{{ $isVisible ? 'চালু আছে' : 'বন্ধ আছে' }}</small></span>
+                    <span class="switch"><input class="section-checkbox" type="checkbox" name="active_sections[]" value="{{ $slug }}" @checked($isVisible)><span class="slider"></span></span>
+                </label>
+            @endforeach
+        </div>
+        <button class="save-status" type="submit"><i class="fa-solid fa-floppy-disk"></i> অবস্থা সংরক্ষণ করুন</button>
+    </section>
+</form>
+@endsection
+
+@push('scripts')
+<script>
+    const sectionCheckboxes = document.querySelectorAll('.section-checkbox');
+    const updateStatusText = item => item.closest('.section-toggle').querySelector('.status-text').textContent = item.checked ? 'চালু আছে' : 'বন্ধ আছে';
+    sectionCheckboxes.forEach(item => item.addEventListener('change', () => updateStatusText(item)));
+    document.getElementById('enableAll').addEventListener('click', () => sectionCheckboxes.forEach(item => { item.checked = true; updateStatusText(item); }));
+    document.getElementById('disableAll').addEventListener('click', () => sectionCheckboxes.forEach(item => { item.checked = false; updateStatusText(item); }));
+</script>
+@endpush
