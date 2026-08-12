@@ -1063,6 +1063,38 @@
                 </div>
             </section>
 
+            <section class="pb-5">
+                <div class="container">
+                    <div class="final-cta reveal">
+                        <div class="position-relative">
+                            <div class="row align-items-center g-4">
+                                <div class="col-lg-8">
+                                    <span
+                                        class="badge rounded-pill bg-white text-primary px-3 py-2 mb-3"
+                                        >স্টক সীমিত</span
+                                    >
+                                    <h2 class="section-title mb-2">
+                                        আজই অর্ডার করুন এবং বিশেষ মূল্য ছাড়
+                                        উপভোগ করুন
+                                    </h2>
+                                    <p class="mb-0 opacity-75">
+                                        অফার শেষ হওয়ার আগেই আপনার ক্যামেরাটি
+                                        নিশ্চিত করুন।
+                                    </p>
+                                </div>
+                                <div class="col-lg-4 text-lg-end">
+                                    <a
+                                        href="#order"
+                                        class="btn btn-light btn-lg rounded-4 px-4 py-3 fw-bold text-primary ripple"
+                                        >এখনই অর্ডার করুন
+                                        <i class="bi bi-arrow-up-right ms-2"></i
+                                    ></a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
         </main>
 
         <a
